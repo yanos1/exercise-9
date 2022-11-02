@@ -17,10 +17,11 @@ class Board:
                 self.boardhelp.append('_')
             self.board.append(self.boardhelp)
         self.target = (3,7)
-        self.poss_moves = []
         self.list_of_car_names = []
         self.cell_list_ = self.cell_list()
-        #self.board[0][0],self.board[1][0],self.board[2][3], self.board[2][4] =1,1,1,1
+        self.car_names = []
+
+
 
     def __str__(self):
         """
@@ -40,23 +41,15 @@ class Board:
         :return: list of tuples of the form (name,movekey,description)
                  representing legal moves
         """
-        #From the provided example car_config.json file, the return value could be
-        #[('O','d',"some description"),('R','r',"some description"),('O','u',"some description")]
-        memo = []
-        for row in self.board:
-            for item in row:
-                if item != "_":
-                    if item not in memo:
-                        memo.append(item)
-                        pos_moves = car.possible_moves() #{u: "bla", d: :"bla"}
-                    else:
-                        continue
-                    for key in pos_moves:
-                        move_requirment = car.movement_requirements(key) #[(1,4)]
-                        if move_requirment[0] in self.cell_list:
-                            self.poss_moves.append((item,key,pos_moves.get(key)))
-        return self.poss_moves
-
+        self.pos_moves = []
+        for car in self.list_of_car_names:
+            possible_moves = car.possible_moves() #{u: "bla", d: :"bla"}
+            for key in possible_moves:
+                needed_pos = car.movement_requirements(key)
+                if needed_pos[0] in self.cell_list_:
+                    if not self.cell_content(needed_pos[0]):
+                        self.pos_moves.append((car.get_name(),key, possible_moves.get(key)))
+        return self.pos_moves
 
 
     def target_location(self):
@@ -89,16 +82,19 @@ class Board:
         #Remember to consider all the reasons adding a car can fail.
         #You may assume the car is a legal car object following the API.
         # implement your code and erase the "pass"
-        if car.location in self.cell_list_ and car.get_name() not in self.list_of_car_names:
-            self.list_of_car_names.append(car.get_name())
+        if car.location in self.cell_list_ and car.get_name() not in self.car_names:
+            self.list_of_car_names.append(car)
+            self.car_names.append(car.get_name())
             positions = car.car_coordinates()
             for pos in positions:
                 if pos in self.cell_list_:
                     if  self.cell_content((pos[0],pos[1])):
-                        self.list_of_car_names.remove(car.get_name())
+                        self.list_of_car_names.remove(car)
+                        self.car_names.remove(car.get_name())
                         return False
                 else:
-                    self.list_of_car_names.remove(car.get_name())
+                    self.car_names.remove(car.get_name())
+                    self.list_of_car_names.remove(car)
                     return False
             for pos in positions:
                 self.board[pos[0]][pos[1]] = car.get_name()
@@ -116,14 +112,17 @@ class Board:
         # implement your code and erase the "pass"
         # [('O','d',"some description"),('R','r',"some description"),('O','u',"some description")]
         #pos_moves = self.possible_moves()
-        requeired_spot = car.movement_requirements(movekey)
-        if requeired_spot[0] in self.cell_list():
-            if self.board[[requeired_spot[0][0]][requeired_spot[0][1]]] == "_":
-                self.board[[requeired_spot[0][0]][requeired_spot[0][1]]] = name
-                self.board[[car.location[0]][car.location[1]]] = "_"
-                return True
-            else:
-                return False
+        pos_moves = self.possible_moves()
+        for car in self.list_of_car_names:
+            if name == car.get_name():
+                for i in range(len(pos_moves)):
+                    if name == self.possible_moves()[i][0]:
+                        if movekey == self.possible_moves()[i][1]:
+                            self.board[car.location[0]][car.location[1]] = "_"
+                            self.board[car.movement_requirements(movekey)[0][0]][car.movement_requirements(movekey)[0][1]] = car.get_name()
+                            car.move(movekey)
+                            return True
+
         return False
 
 

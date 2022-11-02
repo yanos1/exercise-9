@@ -94,8 +94,6 @@ class Car:
         return self.name
 
 
-if __name__ == '__main__':
-    car = Car("R", 3, (1, 4), 0)
 
 
 

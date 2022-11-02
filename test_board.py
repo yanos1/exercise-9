@@ -58,11 +58,14 @@ def test_board_str_different_representations():
     # new one generates a DIFFERENT string (even though we don't know how said string looks like)
     board = Board()
     board_strs = {str(board)}
+    print(board_strs)
 
     assert board.add_car(Car("R", 2, (0, 0), HORIZONTAL))
     board_strs.add(str(board))
+    print(board_strs)
     assert board.move_car("R", MOVE_RIGHT)
     board_strs.add(str(board))
+    print(board_strs)
 
     # we performed 3 operations that changed the board(to 3 different states)
     # so we should've seen 3 different strings
