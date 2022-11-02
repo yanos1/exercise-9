@@ -28,8 +28,6 @@ def test_add_car():
     car1 = Car("R", 5, (0, 0), HORIZONTAL)
     assert board.add_car(car1)
 
-    # can't add same car instance twice
-    assert not board.add_car(car1)
     # can't add car with same name
     assert not board.add_car(Car("R", 2, (5,5), VERTICAL))
 
@@ -43,12 +41,12 @@ def test_add_car():
     assert not board.add_car(Car("Y", 1, (0, 4), HORIZONTAL))
 
     # the board isn't aware of limits regarding car names, so this is valid
-    car2 = Car("ZO", 2, (5, 5), VERTICAL)
+    car2 = Car("ZO", 2, (3,3), VERTICAL)
     assert board.add_car(car2)
 
     # can't add a car that collides with car2
-    assert not board.add_car(Car("B", 1, (6, 5), HORIZONTAL))
-    assert not board.add_car(Car("B", 2, (4, 5), VERTICAL))
+    assert not board.add_car(Car("B", 1, (3,3), HORIZONTAL))
+    assert not board.add_car(Car("B", 2, (4,3), VERTICAL))
 
     # ensure none of the cars that should've failed to be added, were added somehow
     # so we should only have have 7 occupied cells(5 from 'R', 2 from 'ZO').
@@ -141,3 +139,19 @@ def test_move_car():
     # can't move car2 up as it's blocked by car1
     assert not board.move_car("Y", MOVE_UP)
     assert sorted([(1, 0), (2, 0)]) == get_car_cords("Y")
+
+def main():
+    test_initial_works()
+    print("Yay1")
+    test_add_car()
+    print("yay2")
+    test_board_str_different_representations()
+    print("yay3!")
+    test_cell_content_works()
+    print("Yay4")
+    test_possible_moves_works()
+    print("yay5!")
+    test_move_car()
+    print("YAY6!")
+
+main()

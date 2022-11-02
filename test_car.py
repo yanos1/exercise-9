@@ -40,11 +40,10 @@ def test_move():
     # moving in valid direction
     car = Car("test", 2, (1,4), VERTICAL)
     coords0 = car.car_coordinates()
-    print(coords0)
-    print(car.location)
-    print(car.move(MOVE_UP))
+
     assert car.move(MOVE_UP)
     coords1 = car.car_coordinates()
+
     assert [(row-1, col) for row, col in sorted(coords0)] == sorted(coords1)
     assert car.move(MOVE_DOWN)
     coords2 = car.car_coordinates()
@@ -54,6 +53,8 @@ def test_move():
     coords0 = car.car_coordinates()
     assert car.move(MOVE_RIGHT)
     coords1 = car.car_coordinates()
+    print([(row, col+1) for row,col in sorted(coords0)])
+    print(coords1)
     assert [(row, col+1) for row,col in sorted(coords0)] == sorted(coords1)
     assert car.move(MOVE_LEFT)
     coords2 = car.car_coordinates()

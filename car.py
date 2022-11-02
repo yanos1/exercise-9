@@ -17,7 +17,7 @@ class Car:
         self.length = length
         self.location = location
         self.orientation = orientation
-        self.requirements = []
+
 
 
     def car_coordinates(self):
@@ -37,6 +37,7 @@ class Car:
         :return: A dictionary of strings describing possible movements permitted by this car.
         """
         self.moves_dict = {}
+
         if self.orientation == 0:
             self.moves_dict["u"] = "up to the skies"
             self.moves_dict["d"] = "down, but not for long"
@@ -52,7 +53,7 @@ class Car:
         :param movekey: A string representing the key of the required move.
         :return: A list of cell locations which must be empty in order for this move to be legal.
         """
-        print(self.location)
+        self.requirements = []
         if self.orientation == 0:
             if movekey == "u":
                 self.requirements.append((self.location[0]-1,self.location[1]))
@@ -71,11 +72,19 @@ class Car:
         :param movekey: A string representing the key of the required move.
         :return: True upon success, False otherwise
         """
-        empty_pos = car.movement_requirements(movekey)
-        print("empty pos needed = :", empty_pos)
-        if empty_pos[-1]:
+        self.possible_moves()
+        if movekey in self.possible_moves():
+            if movekey == 'd':
+                self.location = (self.location[0] + 1, self.location[1])
+            elif movekey == 'u':
+                self.location = (self.location[0] - 1, self.location[1])
+            elif movekey == 'l':
+                self.location = (self.location[0], self.location[1] - 1)
+            elif movekey == "r":
+                self.location = (self.location[0], self.location[1] + 1)
             return True
-        return False
+        else:
+            return False
 
 
     def get_name(self):
@@ -85,5 +94,9 @@ class Car:
         return self.name
 
 
-#if __name__ == '__main__':
-car = Car("Red", 3, (0, 0), 0)
+if __name__ == '__main__':
+    car = Car("R", 3, (1, 4), 0)
+
+
+
+

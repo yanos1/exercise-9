@@ -8,11 +8,18 @@ class Board:
     def __init__(self):
         self.row = 7
         self.col = 7
-        self.board = [["_" for i in range(self.row)] for j in range(self.col)]
+        self.board = []
+        for line in range(self.row):
+            self.boardhelp = []
+            for col in range(self.col):
+                if col ==6 and line ==3:
+                    self.boardhelp.append('_')
+                self.boardhelp.append('_')
+            self.board.append(self.boardhelp)
         self.target = (3,7)
         self.poss_moves = []
         self.list_of_car_names = []
-        self.cell_list = board.cell_list()
+        self.cell_list_ = self.cell_list()
         #self.board[0][0],self.board[1][0],self.board[2][3], self.board[2][4] =1,1,1,1
 
     def __str__(self):
@@ -20,13 +27,13 @@ class Board:
         This function is called when a board object is to be printed.
         :return: A string of the current status of the board
         """
-        return self.board
+        return str(self.board)
 
     def cell_list(self):
         """ This function returns the coordinates of cells in this board
         :return: list of coordinates
         """
-        return [(i,j) for i in range(self.row) for j in range(self.col)] #+[(3,7)]
+        return [(i,j) for i in range(self.row) for j in range(self.col)] + [(3,7)]
 
     def possible_moves(self):
         """ This function returns the legal moves of all cars in this board
@@ -66,10 +73,12 @@ class Board:
         :return: The name if the car in coordinate, None if empty
         """
         pos = self.board[coordinate[0]][coordinate[1]]
+
         if pos != "_":
-            car_name = car.get_name()
+            car_name = pos
             return car_name
-        return None
+        else:
+            return None
 
     def add_car(self, car):
         """
@@ -80,19 +89,19 @@ class Board:
         #Remember to consider all the reasons adding a car can fail.
         #You may assume the car is a legal car object following the API.
         # implement your code and erase the "pass"
-        if car.name in "RGWOBY" and car.location in self.cell_list and car.name not in board.list_of_car_names:
-            board.list_of_car_names.append(car.get_name())
+        if car.location in self.cell_list_ and car.get_name() not in self.list_of_car_names:
+            self.list_of_car_names.append(car.get_name())
             positions = car.car_coordinates()
             for pos in positions:
-                if pos in self.cell_list:
-                    if not self.cell_content((pos[0],pos[1])):
-                        board.list_of_car_names.remove(car.get_name())
+                if pos in self.cell_list_:
+                    if  self.cell_content((pos[0],pos[1])):
+                        self.list_of_car_names.remove(car.get_name())
                         return False
                 else:
-                    board.list_of_car_names.remove(car.get_name())
+                    self.list_of_car_names.remove(car.get_name())
                     return False
             for pos in positions:
-                self.board[pos[0][pos[1]]] = car.get_name()
+                self.board[pos[0]][pos[1]] = car.get_name()
         else:
             return False
         return True
@@ -120,7 +129,6 @@ class Board:
 
 
 
-if __name__ == '__main__':
-    car = Car("Red", 3, (0, 0), 0)
-    board = Board()
+
+
     
