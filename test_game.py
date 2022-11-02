@@ -95,4 +95,7 @@ def test_valid_simple():
 
     test_helper.fails_with_given_moves(cfg_file, ["O,u"] + ["R,r"] * 2)
     test_helper.fails_with_given_moves(cfg_file, ["O,u"] + ["R,r"] * 1)
+    print("WOW I DID IT")
+
+test_valid_simple()
 

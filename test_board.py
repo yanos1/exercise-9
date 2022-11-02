@@ -69,6 +69,7 @@ def test_board_str_different_representations():
 
     # we performed 3 operations that changed the board(to 3 different states)
     # so we should've seen 3 different strings
+    print(len(board_strs))
     assert 3 == len(board_strs)
 
 

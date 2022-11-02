@@ -118,8 +118,40 @@ class Board:
                 for i in range(len(pos_moves)):
                     if name == self.possible_moves()[i][0]:
                         if movekey == self.possible_moves()[i][1]:
-                            self.board[car.location[0]][car.location[1]] = "_"
-                            self.board[car.movement_requirements(movekey)[0][0]][car.movement_requirements(movekey)[0][1]] = car.get_name()
+                            if car.orientation ==0:
+                                if movekey == "u":
+                                    self.board[car.car_coordinates()[-1][0]][car.car_coordinates()[-1][1]] = "_"
+                                    self.board[
+                                        car.movement_requirements(movekey)[0][
+                                            0]][
+                                        car.movement_requirements(movekey)[0][
+                                            1]] = car.get_name()
+                                elif movekey == "d":
+                                    self.board[car.location[0]][car.location[1]] = "_"
+                                    self.board[
+                                        car.movement_requirements(movekey)[0][
+                                            0]][
+                                        car.movement_requirements(movekey)[0][
+                                            1]] = car.get_name()
+                            elif car.orientation ==1:
+                                if movekey == "r":
+                                    self.board[car.location[0]][car.location[1]] = "_"
+                                    self.board[
+                                        car.movement_requirements(movekey)[0][
+                                            0]][
+                                        car.movement_requirements(movekey)[0][
+                                            1]] = car.get_name()
+                                elif movekey == "l":
+                                    self.board[
+                                        car.car_coordinates()[-1][0]][
+                                        car.car_coordinates()[-1][1]] = "_"
+                                    self.board[
+                                        car.movement_requirements(movekey)[
+                                            0][
+                                            0]][
+                                        car.movement_requirements(movekey)[
+                                            0][
+                                            1]] = car.get_name()
                             car.move(movekey)
                             return True
 
